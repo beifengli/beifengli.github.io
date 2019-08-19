@@ -1,9 +1,9 @@
 ---
-title:  "Welcome to skill!"
+title:  "Welcome to signal!"
 header:
   teaser: "https://farm5.staticflickr.com/4076/4940499208_b79b77fb0a_z.jpg"
 categories: 
-  - skill
+  - signal
 tags:
   - update
   - C++
@@ -14,6 +14,7 @@ You'll find this post in your `_posts` directory. Go ahead and edit it and re-bu
 
 To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
 
+<!--more-->
 Jekyll also offers powerful support for code snippets:
 
 ```ruby

@@ -10,7 +10,7 @@ header:
       zh-CN   : *ZH_HANS
       zh-SG   : *ZH_HANS
       zh-Hant : &ZH_HANT  轨道交通信号
-    url: 
+    url: /signal.html 
 
   - titles:
       en      : &EN       Program
@@ -23,7 +23,7 @@ header:
       zh-CN   : *ZH_HANS
       zh-SG   : *ZH_HANS
       zh-Hant : &ZH_HANT  编程
-    url: 
+    url: /program.html 
 
   - titles:
       en      : &EN       Project
@@ -36,7 +36,7 @@ header:
       zh-CN   : *ZH_HANS
       zh-SG   : *ZH_HANS
       zh-Hant : &ZH_HANT  项目
-    url: 
+    url: /project.html 
 
   - titles:
       en      : &EN       Archive
