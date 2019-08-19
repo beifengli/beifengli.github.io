@@ -1,5 +1,18 @@
 header:
   - titles:
+      en      : &EN       Home
+      en-GB   : *EN
+      en-US   : *EN
+      en-CA   : *EN
+      en-AU   : *EN
+      zh-Hans : &ZH_HANS  主页
+      zh      : *ZH_HANS
+      zh-CN   : *ZH_HANS
+      zh-SG   : *ZH_HANS
+      zh-Hant : &ZH_HANT  主頁
+    url: /index.html 
+
+  - titles:
       en      : &EN       Signal
       en-GB   : *EN
       en-US   : *EN
