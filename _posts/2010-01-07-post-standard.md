@@ -2,7 +2,7 @@
 title: "Post: Standard"
 excerpt_separator: "<!--more-->"
 sharing: true
-key: "Post: Standard"
+key: Post-Standard
 categories:
   - Post Formats
 tags:
