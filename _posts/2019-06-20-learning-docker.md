@@ -1,6 +1,7 @@
 ---
 title:  "docker 基础"
 header:
+key: learning-docker
 categories: 
   - program
 tags:
@@ -109,7 +110,7 @@ sudo systemctl start docker
 #建立docker用户组
 sudo groupadd docker  
 #将当前用户加入docker组
-sudo usermod -aG docker $USER 
+sudo usermod -aG docker $USER
 ```
 
 ### 2.7 验证是否安装正确
@@ -118,17 +119,9 @@ sudo usermod -aG docker $USER
 docker run hello-world
 ```
 
-## 三、原理
+## 三、Docker常用命令  
 
-### 底层原理
-
-#### 虚拟机和Docker
-
-Docker没有硬件虚拟层
-
-## 四、Docker常用命令  
-
-### 4.1 帮助命令
+### 3.1 帮助命令
 
 ```bash
 docker version  #查看版本
@@ -136,7 +129,7 @@ docker info     #查看详细信息
 docker  --help  #查看帮助
 ```
 
-### 4.2 镜像命令
+### 3.2 镜像命令
 
 #### 1. 列出镜像
 
@@ -180,14 +173,13 @@ docker rmi nameid     #删除镜像
 docker image rm nameid #删除镜像
 ```
 
-
 删除单个 `docker rmi -f nameid`
 
 删除多个 `docker rmi -f nameid1 nameid2`
 
 删除全部 `docker rmi -r $(docker images -qa`)
 
-### 4.3 容器命令
+### 3.3 容器命令
 
 #### 1. 启动容器
 
@@ -197,6 +189,7 @@ docker image rm nameid #删除镜像
 docker run [option] image [command] [ARG]
 docker run -it ubuntu:18.04 /bin/bash
 ```
+
 ##### 启动已停止容器
 
 ```bash
@@ -213,6 +206,7 @@ docker container start containId
 6|--rm|容器退出后随之将其删除
 
 映射接口地址
+
 ```bash
 #将本机的5000端口映射到容器的5000端口
 docker run -d -p 5000:5000 training/webapp python app.py
@@ -255,7 +249,6 @@ docker cp id:路径  路径
 docker cp id:/tmp/yum.log /root
 ```
 
-
 #### 4. 列出运行容器
 
 ```bash
@@ -286,10 +279,10 @@ ctrl+P+Q #容器不停止退出
 
 使用`docker attach`时，如果使用`exit`退出，会导致容器的停止。
 使用`docker exec`时，如果使用`exit`退出，不会使容器停止。
-   
+
 ```bash
 #两种方式
-docker attach id 
+docker attach id
 docker exec -it containerId bash
 ```
 
@@ -300,6 +293,7 @@ docker exex -it 69d1 bash
 ```bash
 docker attach 243c
 ```
+
 #### 7. 导入和导出容器
 
 ```bash
@@ -324,11 +318,11 @@ docker rm -f $(docker ps -a -q)
 docker ps -a -q | xargs docker rm  
 ```
 
-## 五、原理
+## 四、原理
 
 镜像是一种轻量级、可执行的独立软件包，用来打包软件运行环境和基于运行环境开发的软件，它包含运行某个软件所需的所有内容，包括代码、运行时、库、环境变量和配置文件。
 
-### 5.1. 联合文件系统
+### 4.1. 联合文件系统
 
 UnionFS (联合文件系统)自Union文件系统(UnionFS) 是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为次提交来层层的叠 加，同时可以将不同目录挂载到同一个虚拟文件系统F(unite several directories into a single virtual flesystem)。
 
@@ -336,7 +330,7 @@ Union文件系统是Docker镜象的基础。镜像可以通过分层来进行继
 
 特征：一次同时加载多个文件系统，但从外面看来，只能看到一个文件系统，联合加载起来，这样最终的文件系统会包含所有底层的文件和目录。
 
-### 5.2. Docker 镜像加载原理
+### 4.2. Docker 镜像加载原理
 
 docker的镜像实际上是由一层一层的文件系统组成，这种层级的文件系统UnionFS。
 
@@ -346,7 +340,7 @@ rootfs(root file system),在bootfs之上。包含的是典型linux系统中的/d
 
 对于一个精简版的OS，rootfs可以很小，只需要包括最基本的命令，工具和程序库就可以，因为底层直接用Host的kernel，自己只需要提供rootfs就好了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有所差别，因此不同的发行版可以共用bootfs。
 
-### 5.3. 分层的镜像
+### 4.3. 分层的镜像
 
 采用分层镜像的原因：共享资源  
 
@@ -354,13 +348,13 @@ rootfs(root file system),在bootfs之上。包含的是典型linux系统中的/d
 
 镜像的每一层都可以被共享。
 
-#### 特点
+特点
 
 docker镜像都是只读的，当容器启动时，一个新的可写层被加载到镜像的顶部。这一层通常被称作“容器层”,“容器层”之下的都叫“镜像层”。
 
-## 六、容器数据卷
+## 五、容器数据卷
 
-### 6.1. docker 的理念：
+### 5.1. docker 的理念
 
 * 将运用与运行的环境打包形成容器运行，运行可以伴随着容器，但是我们对数据的要求希望是持久化的。
 * 容器之间希望有可能共享数据。
@@ -369,13 +363,13 @@ docker 容器产生的数据，如果不通过docker commit生成新的镜像，
 
 目的：数据持久化,数据共享。
 
-### 6.2. 数据卷
+### 5.2. 数据卷
 
 卷就是目录或文件，存在与一个或多个容器中，由docker挂载到容器中，但不属于联合文件系统，因此能够绕过Union File System 提供一些用于持续存储或共享数据的特性：
 
 卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此Docker不会再容器删除时删除其挂载的数据卷。
 
-#### 特点
+特点
 
 1. 数据卷可以在容器之间共享或重用数据  
 2. 卷中的更改可以直接生效  
@@ -383,7 +377,7 @@ docker 容器产生的数据，如果不通过docker commit生成新的镜像，
 4. 数据卷的生命周期一直持续到没有容器使用它为止  
 5. 容器到主机、主机到容器之间的数据共享
 
-### 6.3. 容器数据卷的使用
+### 5.3. 容器数据卷的使用
 
 #### 1. 创建容器时添加
 
@@ -421,7 +415,6 @@ docker run --rm -it --mount type=bind,source=$HOME/.bash_history,target=/root/.b
 
 ##### Dockerfile数据卷格式
 
-
 * 定义匿名数据卷
 
 ```bash
@@ -443,6 +436,7 @@ CMD /bin/bash
 #使用`mydata`挂载到`/data`位置上，代替了`Dockerfile`中定义匿名卷的挂载配置。
 docker run -d -v mydata:/data ID
 ```
+
 #### 6. 挂载报错
 
 Docker 挂载主机目录Docker访问出现cannot open directory : Permission denied
@@ -459,9 +453,9 @@ docker run -it --name  dc02 --volume-form dc01 zzyy/centos
 
 容器之间配置信息的传递，数据卷的什么周期一直持续到没有容器使用它为止。
 
-## 七、制作镜像
+## 六、制作镜像
 
-### 7.1. docker commit提交
+### 6.1. docker commit提交
 
 `docker commit` 提交容器副本使之成为一个新的镜像。
 
@@ -469,7 +463,7 @@ docker run -it --name  dc02 --volume-form dc01 zzyy/centos
 docker commit -m=“提交的描述信息” -a="作者“ 容器ID 要创建的目标镜像名：[标签名]
 ```
 
-### 7.2. Dockerfile构建镜像
+### 6.2. Dockerfile构建镜像
 
 步骤：
 
@@ -481,14 +475,14 @@ docker commit -m=“提交的描述信息” -a="作者“ 容器ID 要创建的
 
 #### 1. Dockerfile 构建过程
 
-##### 基本规则：
+##### 基本规则
 
 1. 每条保留字指令都必须为大写字母，且后面要跟谁至少一个参数
 2. 指令按照从上到下，顺序执行
 3. #表示注释
 4. 每条指令都会创建一个新的镜像层，并对镜像进行提交
 
-##### 执行流程：
+##### 执行流程
 
 1. docker从基础镜像运行一个容器
 2. 执行一条指令并对容器作出修改
@@ -579,6 +573,7 @@ VOLUME <路径>
 #example
 VOLUME /data
 ```
+
 CMD 容器启动命令
 
 ```bash
@@ -603,7 +598,6 @@ RUN apt-get update \
 ENTRYPOINT [ "curl", "-s", "https://ip.cn" ]
 ```
 
-
 #### 3. 生成镜像
 
 ```bash
@@ -616,8 +610,7 @@ docker build -f /mydocker/Dockerfile -t zzyy/centos .
 /var/lib/docker/volumes/.../_data
 ```
 
-
-### 3. 案例
+### 6.3. 案例
 
 BASE镜像scratch
 
