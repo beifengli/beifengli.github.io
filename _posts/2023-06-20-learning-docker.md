@@ -631,3 +631,42 @@ RUN yum -y install net-tools
 EXPOSE 80
 CMD /bin/bash
 ```
+
+#### 2. 案例2
+
+需求：
+
+1. 深度学习环境一键部署
+2. 指定默认路径
+3. 从requirements.txt配置环境
+
+`Dockerfile`
+
+
+```bash
+FROM hub-mirror.c.163.com/pytorch/pytorch:1.10.0-cuda11.3-cudnn8-devel
+
+#install packages
+COPY requirements.txt /
+RUN python3 -m pip install -r /requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+COPY . /workspace
+
+WORKDIR /workspace
+
+#EXPOSE 28097
+#CMD [ "python" , "app.py"]
+
+#build
+#docker image build -t image_name .
+#docker run -it --name p_t --gpus all p_temp:latest
+```
+
+`requirements.txt`
+
+```
+numpy==1.19.5
+tqdm~=4.65.0
+requests~=2.28.2
+
+```
